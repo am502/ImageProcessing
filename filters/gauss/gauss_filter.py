@@ -63,9 +63,10 @@ def calculate_radius_by_sigma(sigma):
     return round(sigma * 6) + 1
 
 
-s = 0.66
-original_image = cv2.imread('tiger.png', 0)
+def main():
+    s = 0.66
+    original_image = cv2.imread('../tiger.png', 0)
 
-gauss_filter = GaussFilter(original_image, calculate_radius_by_sigma(s), s)
+    gauss_filter = GaussFilter(original_image, calculate_radius_by_sigma(s), s)
 
-show_image(original_image, gauss_filter.filter())
+    show_image(original_image, gauss_filter.filter())
