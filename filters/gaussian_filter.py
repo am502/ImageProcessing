@@ -21,7 +21,7 @@ class GaussianFilter:
         return kernel / kernel.sum()
 
     def gaussian_function(self, x, y):
-        return 1 / math.sqrt(2 * math.pi) / self.sigma * math.e ** (-(x * x + y * y) / 2 / self.sigma / self.sigma)
+        return 1 / math.sqrt(2 * math.pi) / self.sigma * math.e ** ((-x * x - y * y) / 2 / self.sigma / self.sigma)
 
     def filter(self):
         filtered_image = self.image.copy()
@@ -60,7 +60,7 @@ def show_image(*images):
 
 
 def calculate_radius_by_sigma(sigma):
-    return 1
+    return round(sigma * 6) + 1
 
 
 original_image = cv2.imread('tiger.png')
