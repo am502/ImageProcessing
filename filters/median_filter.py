@@ -11,7 +11,7 @@ class MedianFilter:
         self.bins_count = 256
 
     def filter(self):
-        filtered_image = np.array((self.height, self.width), dtype=np.uint8)
+        filtered_image = self.image.copy()
         base_histogram = self.calculate_histogram(0, 0)
         current_histogram = base_histogram.copy()
         for i in range(self.height):
@@ -31,19 +31,19 @@ class MedianFilter:
 
     def get_image_value(self, i, j):
         if i < 0:
-            i = -i
+            i = -i - 1
         if j < 0:
-            j = -j
+            j = -j - 1
         if i >= self.height:
-            i = self.height - (i - self.height)
+            i = self.height - (i - self.height) - 1
         if j >= self.width:
-            j = self.width - (j - self.width)
+            j = self.width - (j - self.width) - 1
         return self.image[i][j]
 
     def calculate_median_by_histogram(self, histogram):
         median_border = self.radius * self.radius / 2
         count = 0
-        for i in range(histogram):
+        for i in range(self.bins_count):
             count += histogram[i]
             if count > median_border:
                 return i
@@ -52,7 +52,7 @@ class MedianFilter:
     def shift_histogram_right(self, histogram, center_i, center_j):
         old_column = center_j - self.border
         new_column = center_j + self.border + 1
-        for i in range(-self.border - center_i, self.border + center_i + 1):
+        for i in range(-self.border + center_i, self.border + center_i + 1):
             histogram[self.get_image_value(i, old_column)] -= 1
             histogram[self.get_image_value(i, new_column)] += 1
         return histogram
@@ -60,7 +60,7 @@ class MedianFilter:
     def shift_histogram_down(self, histogram, center_i, center_j):
         old_row = center_i - self.border
         new_row = center_i + self.border + 1
-        for j in range(-self.border - center_j, self.border + center_j + 1):
+        for j in range(-self.border + center_j, self.border + center_j + 1):
             histogram[self.get_image_value(old_row, j)] -= 1
             histogram[self.get_image_value(new_row, j)] += 1
         return histogram
@@ -78,11 +78,11 @@ def show_image(*images):
 
 
 def main():
-    original_image = cv2.imread('tiger.png', 0)
+    original_image = cv2.imread('salt.jpeg', 0)
 
     median_filter = MedianFilter(original_image, 5)
 
-    show_image(median_filter.filter())
+    show_image(original_image, median_filter.filter())
 
 
 main()
