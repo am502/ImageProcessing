@@ -78,7 +78,7 @@ def show_image(*images):
 
 
 def main():
-    original_image = cv2.imread('salt.jpeg', 0)
+    original_image = cv2.imread('../salt.jpeg', 0)
 
     median_filter = MedianFilter(original_image, 5)
 
