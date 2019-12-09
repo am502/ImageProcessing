@@ -9,8 +9,8 @@ class TwoPassLabeling:
         self.height, self.width = image.shape
         self.labels = np.zeros((self.height, self.width), dtype=int)
         self.disjoint_set = DisjointSet()
-        self.i_offset = [0, -1, -1]
-        self.j_offset = [-1, -1, 0]
+        self.i_offset = [0, -1, -1, -1]
+        self.j_offset = [-1, -1, 0, 1]
 
     def label(self):
         for i in range(self.height):

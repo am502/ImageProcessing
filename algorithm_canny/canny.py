@@ -17,10 +17,13 @@ def show_image(*images):
             break
 
 
-def canny(radius, sigma, high_threshold, low_threshold):
-    original_image = cv2.imread('resources/tiger.png', 0)
+def get_optimal_thresholds(image):
+    high_threshold = image.max() * 0.3
+    return high_threshold / 2, high_threshold
 
-    filtered_image = GaussFilter(original_image, radius, sigma).filter()
+
+def canny(image, radius, sigma, low_threshold, high_threshold):
+    filtered_image = GaussFilter(image, radius, sigma).filter()
 
     magnitudes, angles = Sobel(filtered_image).calculate_gradient()
 
@@ -44,10 +47,15 @@ def canny(radius, sigma, high_threshold, low_threshold):
 
     for i in range(height):
         for j in range(width):
-            if labels[i][j] not in strong_labels:
+            if labels[i][j] in strong_labels:
+                suppressed_image_copy[i][j] = 255
+            else:
                 suppressed_image_copy[i][j] = 0
 
-    show_image(original_image, filtered_image, magnitudes, suppressed_image, suppressed_image_copy)
+    show_image(image, filtered_image, magnitudes, suppressed_image, suppressed_image_copy)
 
 
-canny(5, 1.4, 10, 100)
+original_image = cv2.imread('resources/maestro.jpg', 0)
+low, high = get_optimal_thresholds(original_image)
+
+canny(original_image, 5, 1.4, low, high)
