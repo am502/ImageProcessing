@@ -20,7 +20,7 @@ class GaussFilter:
         return kernel / kernel.sum()
 
     def gauss_function(self, x, y):
-        return math.e ** ((-x * x - y * y) / 2 / self.sigma / self.sigma) / 2 / math.pi / self.sigma / self.sigma
+        return math.e ** ((-x * x - y * y) / 2 / self.sigma / self.sigma) / math.sqrt(2 * math.pi) / self.sigma
 
     def filter(self):
         filtered_image = self.image.copy()

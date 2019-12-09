@@ -19,6 +19,8 @@ class DisjointSet:
     def union(self, x, y):
         x_root = self.find(x)
         y_root = self.find(y)
+        if x_root == y_root:
+            return
         if self.ranks[x_root] < self.ranks[y_root]:
             self.parents[x_root] = y_root
         elif self.ranks[x_root] > self.ranks[y_root]:
